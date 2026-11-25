@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Explain It My Way</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="logo" aria-hidden="true">&#10022;</div>
+      <div>
+        <div class="brand">Explain It My Way</div>
+        <div class="tagline">Tech, explained the way a friend would</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Curious about tech, but tired of the jargon?</h1>
+        <p>
+          Pick something you have been wondering about, choose a story from
+          everyday life, and we will walk you through it. No jargon. No
+          pressure. Just the &ldquo;oh, <em>that</em> is what it means&rdquo;
+          feeling.
+        </p>
+      </section>
+
+      <section class="picker" aria-label="Choose what to explain">
+        <div class="field">
+          <label for="concept"
+            ><span class="step">1</span> What are you curious about?</label
+          >
+          <select id="concept"></select>
+          <div id="custom-concept" class="custom" hidden>
+            <input
+              id="custom-input"
+              type="text"
+              maxlength="80"
+              placeholder="e.g. vector database, blockchain, quantum computing"
+              aria-label="Tech concept to explain"
+            />
+            <button id="suggest" type="button" class="secondary">
+              Suggest stories
+            </button>
+          </div>
+          <p class="hint" id="concept-hint"></p>
+        </div>
+
+        <div class="field">
+          <label for="metaphor"
+            ><span class="step">2</span> Which story feels familiar to
+            you?</label
+          >
+          <select id="metaphor" disabled></select>
+          <p class="hint" id="metaphor-hint"></p>
+        </div>
+
+        <p id="error" class="error" role="alert" hidden></p>
+
+        <button id="generate" type="button" disabled>
+          &#10024; Tell me the story
+        </button>
+      </section>
+
+      <section id="output" class="output" hidden aria-live="polite">
+        <div class="actions" id="actions">
+          <button id="copy" type="button" class="secondary">
+            Copy as Markdown
+          </button>
+          <button id="download" type="button" class="secondary">
+            Download .md
+          </button>
+        </div>
+        <article id="doc" class="doc"></article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      Made for the curious. Every story is a simplified picture, so the real
+      thing is always a little more complicated.
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
