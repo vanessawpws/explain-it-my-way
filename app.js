@@ -12,9 +12,16 @@ const customBox = document.getElementById("custom-concept");
 const customInput = document.getElementById("custom-input");
 const suggestButton = document.getElementById("suggest");
 const errorEl = document.getElementById("error");
+const conceptArt = document.getElementById("concept-art");
+const docArt = document.getElementById("doc-art");
 
 const CUSTOM_ID = "__custom__";
-const GENERATE_LABEL = "\u2728 Tell me the story";
+const GENERATE_LABEL = "\u2728 Make it make sense";
+
+// Stickers are our own inline SVG (see art.js), so setting innerHTML is safe.
+const setArt = (el, id) => {
+  el.innerHTML = id ? ART[id] || ART.custom : "";
+};
 
 let currentMarkdown = "";
 let currentTitle = "";
@@ -82,6 +89,7 @@ function clearOutput() {
   output.hidden = true;
   actions.hidden = false;
   docEl.innerHTML = "";
+  setArt(docArt, null);
   currentMarkdown = "";
   showError("");
 }
@@ -167,7 +175,11 @@ function renderMarkdown(markdown) {
   return html.join("\n");
 }
 
-fillSelect(conceptSelect, "Pick something you're curious about...", CONCEPTS);
+fillSelect(
+  conceptSelect,
+  "Pick something you've been nodding along to...",
+  CONCEPTS,
+);
 fillSelect(metaphorSelect, "Pick a topic first", []);
 
 // Live stories (any topic) only exist when the server has an API key.
@@ -210,6 +222,7 @@ conceptSelect.addEventListener("change", () => {
   if (isCustom) {
     conceptHint.textContent =
       "Type any tech idea, then ask for story suggestions.";
+    setArt(conceptArt, "custom");
     fillSelect(metaphorSelect, "Suggest stories first", []);
     metaphorSelect.disabled = true;
     customInput.focus();
@@ -219,12 +232,14 @@ conceptSelect.addEventListener("change", () => {
   const concept = findConcept(conceptSelect.value);
   if (!concept) {
     conceptHint.textContent = "";
+    setArt(conceptArt, null);
     fillSelect(metaphorSelect, "Pick a topic first", []);
     metaphorSelect.disabled = true;
     return;
   }
 
   conceptHint.textContent = concept.plain;
+  setArt(conceptArt, concept.id);
   fillSelect(
     metaphorSelect,
     "Pick a story that feels familiar...",
@@ -240,6 +255,7 @@ suggestButton.addEventListener("click", async () => {
   generateButton.disabled = true;
   metaphorHint.textContent = "";
   conceptHint.textContent = "";
+  setArt(conceptArt, null);
 
   if (topic.length < 2) {
     showError("Type the tech idea you want explained.");
@@ -262,6 +278,7 @@ suggestButton.addEventListener("click", async () => {
       metaphors: data.metaphors.map((m, i) => ({ ...m, id: `g${i}` })),
     };
     conceptHint.textContent = data.plain;
+    setArt(conceptArt, "custom");
     fillSelect(
       metaphorSelect,
       "Pick a story that feels familiar...",
@@ -301,6 +318,7 @@ async function streamStory(concept, metaphor) {
   generateButton.textContent = "Writing your story...";
   actions.hidden = true;
   docEl.innerHTML = "";
+  setArt(docArt, "custom");
   output.hidden = false;
   output.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -362,6 +380,7 @@ generateButton.addEventListener("click", () => {
   currentMarkdown = buildMarkdown(metaphor);
   currentTitle = `${concept.id}-as-${metaphor.id}`;
   docEl.innerHTML = renderMarkdown(currentMarkdown);
+  setArt(docArt, concept.id);
   output.hidden = false;
   output.scrollIntoView({ behavior: "smooth", block: "start" });
 });
