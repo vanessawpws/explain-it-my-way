@@ -20,6 +20,12 @@ const sparkle = (x, y, s, fill = "#ffd84d") => {
   return `<path d="M${x} ${y - s} L${x + k} ${y - k} L${x + s} ${y} L${x + k} ${y + k} L${x} ${y + s} L${x - k} ${y + k} L${x - s} ${y} L${x - k} ${y - k} Z" fill="${fill}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>`;
 };
 
+// A tiny happy face for small shapes: two dot eyes and a little smile.
+const miniFace = (cx, cy) => `
+  <ellipse cx="${cx - 6}" cy="${cy}" rx="2.4" ry="3.2" fill="${INK}"/>
+  <ellipse cx="${cx + 6}" cy="${cy}" rx="2.4" ry="3.2" fill="${INK}"/>
+  <path d="M${cx - 3.5} ${cy + 5} Q${cx} ${cy + 9} ${cx + 3.5} ${cy + 5}" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/>`;
+
 const ART = {
   // A tiny stack of friendly servers.
   "data-center": sticker(`
@@ -64,6 +70,84 @@ const ART = {
     <rect x="24" y="50" width="72" height="56" rx="17" fill="#ffd84d" stroke="${INK}" stroke-width="3"/>
     ${face(60, 74)}
     ${sparkle(104, 20, 9, "#ff8fb8")}`),
+
+  // A puffy cloud: someone else's computers, out there.
+  cloud: sticker(`
+    <path d="M32 90 A21 21 0 0 1 34 48 A27 27 0 0 1 84 42 A24 24 0 0 1 90 90 Z" fill="#e4d9ff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    ${face(60, 68)}
+    ${sparkle(102, 22, 9)}`),
+
+  // A plug: one program connecting to another.
+  api: sticker(`
+    <rect x="42" y="12" width="9" height="30" rx="4" fill="#cfc3ee" stroke="${INK}" stroke-width="3"/>
+    <rect x="69" y="12" width="9" height="30" rx="4" fill="#cfc3ee" stroke="${INK}" stroke-width="3"/>
+    <rect x="26" y="38" width="68" height="50" rx="18" fill="#ffc6dc" stroke="${INK}" stroke-width="3"/>
+    ${face(60, 60)}
+    <path d="M60 88 V100 Q60 110 74 110 H98" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+    ${sparkle(14, 26, 9)}`),
+
+  // A stack of data in a cylinder: a place to keep things.
+  database: sticker(`
+    <path d="M26 26 V88 C26 100 94 100 94 88 V26" fill="#c9f0dc" stroke="${INK}" stroke-width="3"/>
+    <ellipse cx="60" cy="26" rx="34" ry="13" fill="#e4f9ee" stroke="${INK}" stroke-width="3"/>
+    <path d="M26 46 C26 58 94 58 94 46" fill="none" stroke="${INK}" stroke-width="3"/>
+    <path d="M26 78 C26 90 94 90 94 78" fill="none" stroke="${INK}" stroke-width="3"/>
+    ${face(60, 66)}
+    ${sparkle(104, 14, 9)}`),
+
+  // An address book: names turned into numbers.
+  dns: sticker(`
+    <rect x="26" y="12" width="68" height="96" rx="12" fill="#ffc6dc" stroke="${INK}" stroke-width="3"/>
+    <rect x="26" y="12" width="14" height="96" rx="7" fill="#ff8fb8" stroke="${INK}" stroke-width="3"/>
+    ${face(68, 50)}
+    <rect x="50" y="78" width="34" height="16" rx="6" fill="#fff8f1" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M56 86 H78" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/>
+    ${sparkle(104, 20, 9)}`),
+
+  // A lightning bolt: fast, because the answer is already close by.
+  caching: sticker(`
+    <path d="M68 8 L30 66 H56 L48 112 L92 48 H64 Z" fill="#ffd84d" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    ${face(57, 58)}
+    ${sparkle(100, 100, 9, "#ff8fb8")}`),
+
+  // A cardboard box: everything the app needs, sealed in.
+  containers: sticker(`
+    <rect x="20" y="40" width="80" height="64" rx="10" fill="#ffd6a8" stroke="${INK}" stroke-width="3"/>
+    <rect x="14" y="22" width="92" height="24" rx="9" fill="#ffb27a" stroke="${INK}" stroke-width="3"/>
+    <rect x="52" y="22" width="16" height="24" fill="#ffd84d" stroke="${INK}" stroke-width="3"/>
+    ${face(60, 72)}
+    ${sparkle(104, 16, 9, "#ff8fb8")}`),
+
+  // A branching tree of save points: changes that split and rejoin.
+  git: sticker(`
+    <path d="M42 20 V96" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M42 70 C42 50 82 58 82 36" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="42" cy="22" r="11" fill="#e4d9ff" stroke="${INK}" stroke-width="3"/>
+    <circle cx="42" cy="58" r="11" fill="#ffc6dc" stroke="${INK}" stroke-width="3"/>
+    <circle cx="82" cy="34" r="11" fill="#c9f0dc" stroke="${INK}" stroke-width="3"/>
+    <circle cx="42" cy="96" r="16" fill="#ffd84d" stroke="${INK}" stroke-width="3"/>
+    ${miniFace(42, 92)}
+    ${sparkle(100, 82, 9)}`),
+
+  // Nested dolls: the same shape, again and again, smaller each time.
+  recursion: sticker(`
+    <circle cx="60" cy="60" r="48" fill="#ffd6e8" stroke="${INK}" stroke-width="3"/>
+    <circle cx="60" cy="60" r="33" fill="#e4d9ff" stroke="${INK}" stroke-width="3"/>
+    <circle cx="60" cy="60" r="19" fill="#ffd84d" stroke="${INK}" stroke-width="3"/>
+    ${miniFace(60, 56)}
+    ${sparkle(106, 16, 9)}`),
+
+  // Linked blocks: a chain of records, each one tied to the last.
+  blockchain: sticker(`
+    <path d="M38 62 H46 M74 62 H82" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>
+    <rect x="6" y="44" width="34" height="34" rx="10" fill="#e4d9ff" stroke="${INK}" stroke-width="3"/>
+    ${miniFace(23, 58)}
+    <rect x="43" y="44" width="34" height="34" rx="10" fill="#ffc6dc" stroke="${INK}" stroke-width="3"/>
+    ${miniFace(60, 58)}
+    <rect x="80" y="44" width="34" height="34" rx="10" fill="#c9f0dc" stroke="${INK}" stroke-width="3"/>
+    ${miniFace(97, 58)}
+    ${sparkle(60, 22, 10)}
+    ${sparkle(60, 100, 7, "#ff8fb8")}`),
 
   // For topics you type in yourself: a happy star.
   custom: sticker(`

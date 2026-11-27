@@ -2,11 +2,14 @@
 // Each comparison has a `doc`: a full explanation written as Markdown in the voice
 // described in writing/style-guide.md (with writing/example.md as the model answer).
 //
-// To add a concept, add an entry below and an optional sticker in art.js.
-// No other code changes are needed.
+// This file holds the first concepts. Newer ones live one per file in concepts/
+// and add themselves with CONCEPTS.push({...}). To add a concept, copy one of those
+// files, then add its <script> tag to index.html (after data.js) and an optional
+// sticker in art.js. No other code changes are needed.
 //
-// Doc rules: only "# ", "## ", "- ", plain paragraphs, and **bold** are rendered.
-// Don't use backticks or ${ inside a doc, since docs are JavaScript template strings.
+// Doc rules: only "# ", "## ", "- ", plain paragraphs, **bold**, and flow:/map:
+// diagram lines are rendered. Don't use backticks or ${ inside a doc, since docs
+// are JavaScript template strings.
 
 const CONCEPTS = [
   {
@@ -33,6 +36,8 @@ It's 7 p.m. and you ask a chatbot for a dinner idea. Your phone doesn't know the
 
 That slip lands in a data center, which works like a restaurant kitchen at the busiest hour of the night. The difference is that this kitchen never has a slow night. Let's walk through it.
 
+![An order slip travels from your phone through the internet to the data center kitchen, and the answer comes back.](flow:Your phone|The internet|Data center kitchen|Your answer)
+
 ## The kitchen
 
 A data center is a large building full of powerful computers with no screen or keyboard. They only do work for other people.
@@ -41,6 +46,8 @@ A data center is a large building full of powerful computers with no screen or k
 - **Storage is the pantry.** Drives hold your photos, videos, messages, and websites until someone asks for them. Unlike real ingredients, nothing gets used up: your photo is still on the shelf after it's been served.
 - **The network is the order window.** Cables carry your request in and the finished dish back out.
 
+![Three parts of the kitchen: computers are the cooks, storage is the pantry, and the network is the order window.](map:Computers=The cooks|Storage=The pantry|The network=The order window)
+
 At the pass, a head chef sends your slip to a cook who isn't busy, like a host seating you at an empty table. Within a blink, your answer is plated and on its way to your phone. Thousands of other orders are being cooked at the same moment.
 
 ## Why the kitchen is so hot
@@ -48,6 +55,8 @@ At the pass, a head chef sends your slip to a cook who isn't busy, like a host s
 Anyone who has worked a restaurant line knows the heat. Computers make heat too. Nearly all the electricity they use turns into warmth, and hot chips slow down or break.
 
 So a data center has the equivalent of giant exhaust hoods. Cold air is blown in at the front of the racks of computers, and hot air is pulled out the back and carried outside. Some newer designs pipe liquid right up to the chips, because liquid carries heat away better than air.
+
+![Cold air is blown in the front of the racks of computers, and hot air is pulled out the back and carried outside.](flow:Cold air in the front|Computers|Hot air out the back|Outside)
 
 ## The kitchen never closes
 
@@ -83,6 +92,8 @@ It's 3 p.m. on a Sunday and you want to show a friend a photo from a trip two su
 
 That slip lands in a data center, which works like a giant library that never closes and has more shelves than you could ever walk. Let's walk through it.
 
+![A request slip travels from your phone through the internet to the data center library, and the photo comes back.](flow:Your phone|The internet|Data center library|Your photo)
+
 ## The library
 
 A data center is a large building full of powerful computers and storage. Nobody browses it. It only fills requests.
@@ -90,6 +101,8 @@ A data center is a large building full of powerful computers and storage. Nobody
 - **Storage is the shelves.** Row after row of drives hold photos, videos, messages, and websites.
 - **Computers are the librarians.** They take your slip, find the item, and bring it back. Many work at once, so nobody waits in line.
 - **The network is the front desk and the book chute.** Requests come in and answers go out over cables.
+
+![Three parts of the library: storage is the shelves, computers are the librarians, and the network is the front desk.](map:Storage=The shelves|Computers=The librarians|The network=The front desk)
 
 A good library doesn't make librarians wander the stacks. It keeps a catalog that says exactly where each item sits. A data center keeps its own index, which is how it finds one photo among billions in a blink.
 
@@ -102,6 +115,8 @@ A normal library only hands out what's on its shelves. A data center does that, 
 Libraries control the temperature and dampness to keep old books from falling apart. Data centers fight a similar enemy, which is heat. Nearly all the electricity computers use turns into warmth, and hot chips slow down or break, so the building runs big cooling systems around the clock.
 
 Then there's the spare copy. A smart library keeps copies of its rarest books at another branch, so one flood doesn't erase them. A data center does the same with important information, storing copies in more than one building. It also keeps batteries and diesel generators ready, so a power cut doesn't close the doors.
+
+![If the power grid fails, batteries take over first, then diesel generators.](flow:Power grid|Batteries|Diesel generators)
 
 ## The bottom line
 
@@ -125,6 +140,8 @@ It's 9 a.m. You check your bank balance, open your kid's school app, and order b
 
 A data center works like an apartment building where the tenants are companies and the residents are computers. Let's walk through it.
 
+![The parts of the apartment building: companies are the tenants, their computers are the residents, and the data center is the building.](map:Companies=The tenants|Their computers=The residents|The data center=The building)
+
 ## The building
 
 A data center is a large building divided into spaces that companies rent and fill with their own computers.
@@ -142,6 +159,8 @@ When a lightbulb goes out or a pipe leaks, someone on the maintenance team fixes
 ## When the power goes out
 
 A well-built building has emergency lights and a backup generator so the elevator and the fire alarms keep working. A data center has the same idea at a much bigger scale. Batteries take over the instant the power fails, then diesel generators start up and can run for days.
+
+![When the grid fails, batteries take over instantly and diesel generators start up next.](flow:Power grid fails|Batteries take over|Generators start|Power keeps flowing)
 
 ## The neighbors are always on the phone
 
@@ -179,6 +198,8 @@ It's Saturday morning at the park. A toddler sits in her stroller as a dog trots
 
 You could try to write one. A dog has four legs, a tail, and fur. But so does a cat. So instead, you point and name, over and over, until it clicks. Machine learning works the same way. Let's walk through it.
 
+![The toddler sees an animal, guesses a name, gets corrected, and tries again.](flow:See an animal|Guess a name|Get corrected|Try again)
+
 ## How the toddler learns
 
 - **Pointing and naming is training.** Each animal comes with the right answer attached. Computers call these labeled examples.
@@ -186,6 +207,8 @@ You could try to write one. A dog has four legs, a tail, and fur. But so does a 
 - **Corrections are feedback.** When she points at a cat and says "dog," her dad says, "Nope, that's a cat." Each correction nudges what she pays attention to next time.
 
 Computers learn in the same loop: guess, get told how wrong the guess was, adjust a little, and try again.
+
+![Three parts of learning: labeled examples are pointing and naming, the model is her feel for dogs, and feedback is the corrections.](map:Labeled examples=Pointing and naming|The model=Her feel for dogs|Feedback=The corrections)
 
 ## A dog she has never met
 
@@ -225,6 +248,8 @@ It's 6 p.m. and you're trying to make a soup you once had at a restaurant. You d
 
 So you try again. A little less salt, a little more herbs. Still not right. Machine learning works a lot like this. Let's walk through it.
 
+![The chef cooks a batch, tastes it, adjusts a little, and cooks again.](flow:Cook a batch|Taste it|Adjust a little|Cook again)
+
 ## The soup, step by step
 
 - **The first random soup is an untrained model.** The computer starts with its settings set more or less at random, so its first answers are bad.
@@ -234,6 +259,8 @@ So you try again. A little less salt, a little more herbs. Still not right. Mach
 ## Thousands of batches
 
 One tweak doesn't do much. But after hundreds of batches, the soup gets remarkably good. That repetition is what "training" means: many rounds of try, check, and adjust. A computer can do thousands of rounds in the time it takes you to make one pot.
+
+![Three parts of training: the model's settings are the recipe, checking the answer is tasting, and training rounds are batches of soup.](map:The model's settings=The recipe|Checking the answer=Tasting|Training rounds=Batches of soup)
 
 ## Serving a new guest
 
@@ -265,11 +292,15 @@ It's your first day at the post office. A mountain of envelopes sits in front of
 
 You guess at each one, flip it over, and see if you were right. Machine learning works the same way. Let's walk through it.
 
+![The sorter starts with a pile of envelopes, guesses each address, flips the envelope to check, and eventually reads at a glance.](flow:Pile of envelopes|Guess the address|Flip to check|Read at a glance)
+
 ## The sorting room
 
 - **The pile of envelopes with answers on the back is the training examples.** The computer starts with a huge pile of examples, each with the right answer attached.
 - **Flipping the envelope is checking a guess.** The computer compares its guess to the right answer. When it's wrong, it adjusts.
 - **Reading at a glance is the model.** After a few thousand letters you stop reading letter by letter. You recognize shapes at a glance. That quick sense is the pattern the computer has learned.
+
+![Three parts of the sorting room: training examples are envelopes with answers, checking a guess is flipping the envelope, and the model is reading at a glance.](map:Training examples=Envelopes with answers|Checking a guess=Flipping the envelope|The model=Reading at a glance)
 
 ## A stranger's handwriting
 
@@ -317,12 +348,16 @@ It's 7 a.m. and your phone says "70 percent chance of rain." Nobody knows whethe
 
 A large language model works like a forecaster for words. Instead of clouds and pressure, it looks at the text so far and predicts what's likely to come next. Let's walk through it.
 
+![The model reads your question, weighs the likely next words, picks one, and repeats until the answer is done.](flow:Your question|Weigh likely next words|Pick one|Repeat)
+
 ## The forecast desk
 
 - **Years of weather records are the text it learned from.** A language model has read an enormous amount of writing, including books, articles, and websites, and learned which words tend to follow which.
 - **Tomorrow's forecast is the next word.** The model predicts the next small piece of text, then the next, and the next. It builds a whole answer one step at a time, the way a forecaster looks ahead one day, then the day after.
 - **The chance of rain is how likely each next word is.** The model weighs many possible next words and picks one that's likely, with a little randomness. That's why asking the same question twice can give different answers.
 - **Today's sky is your question.** The forecaster reads today's clouds before saying anything. The model reads your question and everything said so far in the conversation, which is why a clearer question usually gets a better answer.
+
+![The forecaster's tools matched to the model's: records are training text, tomorrow's forecast is the next word, the chance of rain is word likelihood, and today's sky is your question.](map:Training text=Years of weather records|The next word=Tomorrow's forecast|Word likelihood=Chance of rain|Your question=Today's sky)
 
 ## Confidently wrong
 
@@ -358,11 +393,15 @@ It's 9 p.m. at a comedy club. The host calls out a prompt from the audience: "A 
 
 A large language model writes the same way. It doesn't plan the whole answer. It adds the next piece that fits, over and over. Let's walk through it.
 
+![The model adds one piece at a time, each one fitting what came before, until the answer is finished.](flow:Your question|Next piece that fits|Another piece|Finished answer)
+
 ## The stage
 
 - **Years of watching shows is training on text.** A great improviser has watched countless scenes and soaked up how stories go. A language model has read an enormous amount of writing and soaked up how language goes.
 - **The scene so far is your question and the conversation.** The actor doesn't plan ahead. They respond to what was just said. The model responds to what you asked and everything that came before it.
 - **The next line is the next word.** The actor adds a line that fits the scene. The model adds the next small piece of text that fits, one at a time, until the answer is complete.
+
+![Three parts of the stage: training text is years of watching shows, your question is the scene so far, and the next word is the next line.](map:Training text=Years of watching shows|Your question=The scene so far|The next word=The next line)
 
 ## Never break character
 
@@ -400,11 +439,15 @@ It's noon at a café. You tell your friend, "I'm going to the grocery..." and sh
 
 Now imagine a friend who has read nearly everything ever written, and who finishes your sentences all day long. That's a large language model. Let's walk through it.
 
+![You start a sentence, the model guesses the next word, then another, until a full paragraph exists.](flow:You start a sentence|It guesses the next word|It guesses another|A full paragraph)
+
 ## The friend
 
 - **The friend's years of reading are the training text.** A language model has been trained on an enormous amount of writing, and that's where its knowledge comes from.
 - **Finishing your sentence is predicting the next word.** The model does this over and over, one small piece at a time, until it has built a whole paragraph.
 - **Knowing the topic is the conversation so far.** Your friend guesses better when she knows what you're talking about. The model's guesses depend on your question and everything said so far, which is why more detail gets you a better answer.
+
+![Three parts of the friendship: training text is years of reading, predicting the next word is finishing your sentence, and the conversation so far is knowing the topic.](map:Training text=Years of reading|Predicting the next word=Finishing your sentence|The conversation so far=Knowing the topic)
 
 ## The friend who never says "I'm not sure"
 
@@ -450,12 +493,16 @@ It's 10 p.m. and you're on a coffee shop's public Wi-Fi, buying a gift. You type
 
 Unless it's inside a locked box. Encryption works like a locked box that only the right person can open. Let's walk through it.
 
+![Your card number is locked in a box, travels across the internet, and is opened by the store.](flow:Your card number|Locked box|The internet|Opened by the store)
+
 ## The box
 
 - **A postcard is plain information.** Anyone who handles it can read it.
 - **A locked box is encrypted information.** Couriers can carry it, but they can't see inside.
 - **Snapping the lock shut is encrypting.** Readable information is scrambled into something that looks like nonsense.
 - **The key is the secret that unscrambles it.** Only the person with the right key can open the box and read the message.
+
+![Four parts of the box: plain information is a postcard, encrypted information is a locked box, encrypting is locking it, and the key is the key.](map:Plain information=A postcard|Encrypted information=A locked box|Encrypting=Locking the box|The key=The key)
 
 ## What the couriers see
 
@@ -491,6 +538,8 @@ It's a Tuesday in sixth grade. You want to pass a note to your best friend, but 
 
 So the two of you agree on a rule: shift every letter three places forward. "Hello" becomes "Khoor." Encryption works just like this. Let's walk through it.
 
+![Your note is scrambled with the shared rule, passed along the desks, and unscrambled by your friend.](flow:Your note|Scrambled with the rule|Passed along the desks|Unscrambled by your friend)
+
 ## The note
 
 - **The shared rule is the key.** Only you and your friend know it.
@@ -499,6 +548,8 @@ So the two of you agree on a rule: shift every letter three places forward. "Hel
 - **The desks along the way are the internet.** Information passes through many computers before it arrives, just as your note passes through other hands.
 
 Anyone along the route can see the gibberish, but nobody can make sense of it.
+
+![Four parts of the code: the key is the shared rule, encrypting is writing in code, decrypting is decoding the note, and the internet is the desks along the way.](map:The key=The shared rule|Encrypting=Writing in code|Decrypting=Decoding the note|The internet=The desks along the way)
 
 ## Why a simple code isn't enough
 
@@ -532,11 +583,15 @@ It's your first night on vacation. The hotel room can be opened by the cleaner, 
 
 Encryption works like that safe, for the information on your phone or laptop. Let's walk through it.
 
+![Your photos and messages are locked with your passcode, so a thief who steals the phone still can't read them.](flow:Photos and messages|Locked with your passcode|Thief steals the phone|Still unreadable)
+
 ## The safe
 
 - **The valuables are your photos, messages, and passwords.** They sit on a phone or laptop that could be lost or stolen.
 - **The safe's code is the key.** It's a secret that locks and unlocks your information, and it's often tied to your passcode or fingerprint.
 - **Locking the safe is encrypting.** The information inside is scrambled so it looks like noise to anyone without the key.
+
+![Three parts of the safe: your data is the valuables, the key is the safe's code, and encrypting is locking the safe.](map:Your data=The valuables|The key=The safe's code|Encrypting=Locking the safe)
 
 ## The burglar gets in anyway
 

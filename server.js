@@ -1,13 +1,14 @@
 // Tiny zero-dependency server for Explain It My Way.
 //
-// - Serves the static app (index.html, app.js, art.js, data.js, styles.css).
-// - Optionally turns on "live" stories for any topic by proxying to the
+// - Serves the static app (index.html, app.js, art.js, data.js, styles.css,
+//   plus the concepts/ and images/ folders).
+// - Optionally turns on "live" explanations for any topic by proxying to the
 //   Anthropic API. The API key stays on the server and never reaches the browser.
 //
 // Endpoints used by app.js:
 //   GET  /api/status     -> { live: boolean }
 //   POST /api/metaphors  -> { name, plain, metaphors: [{ name, whyItFits }] }
-//   POST /api/story      -> streamed Markdown
+//   POST /api/story      -> streamed Markdown (optional "audience": kid | manager | technical)
 //
 // Run:  ANTHROPIC_API_KEY=sk-ant-... npm start   (or put it in a .env file)
 
@@ -48,11 +49,23 @@ const STATIC_FILES = {
   "/styles.css": "styles.css",
 };
 
+// Plus simple file names inside these folders (no subfolders, no dots but the extension).
+const STATIC_FOLDER = /^\/(concepts|images)\/([\w-]+\.(js|svg|png|jpe?g|webp))$/;
+
 const MIME = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
 };
+
+// Audience levels for live explanations. The detailed adjustments for each one
+// are written in writing/style-guide.md under "Audience levels".
+const AUDIENCES = new Set(["kid", "manager", "technical"]);
 
 // ---------------------------------------------------------------- helpers
 
@@ -177,7 +190,7 @@ async function handleMetaphors(req, res) {
 
   const system = `${VOICE}
 
-Given a tech concept, you suggest three everyday stories (metaphors) that explain it. Choose metaphors that map onto how the concept really works, not just ones that sound cute. Pick three from clearly different parts of life (for example food, school, travel, sports, family, games, shopping).
+Given a tech concept, you suggest three everyday comparisons that explain it. Choose comparisons that map onto how the concept really works, not just ones that sound cute. Pick three from clearly different parts of life (for example food, school, travel, sports, family, games, shopping).
 
 Reply with ONLY a JSON object, no other text, in exactly this shape:
 {
@@ -204,7 +217,7 @@ The "metaphors" array must contain exactly 3 items. If the input is not a tech o
   try {
     parsed = extractJson(text);
   } catch {
-    throw Object.assign(new Error("Could not come up with stories. Try again."), {
+    throw Object.assign(new Error("Could not come up with comparisons. Try again."), {
       status: 502,
     });
   }
@@ -220,7 +233,7 @@ The "metaphors" array must contain exactly 3 items. If the input is not a tech o
   const name = str(parsed.name, MAX_CONCEPT) || topic;
   const plain = str(parsed.plain, 400);
   if (!plain || metaphors.length === 0) {
-    throw Object.assign(new Error("Could not come up with stories. Try again."), {
+    throw Object.assign(new Error("Could not come up with comparisons. Try again."), {
       status: 502,
     });
   }
@@ -229,9 +242,9 @@ The "metaphors" array must contain exactly 3 items. If the input is not a tech o
 }
 
 // The writing voice lives in writing/style-guide.md, with a model answer in
-// writing/example.md. Edit those files to change how every live story reads.
-// (The renderer in app.js only understands "# ", "## ", "- ", paragraphs, and **bold**.
-// The style guide tells the model to stay within that.)
+// writing/example.md. Edit those files to change how every live explanation reads.
+// (The renderer in app.js understands "# ", "## ", "- ", paragraphs, **bold**, and
+// the flow:/map: diagram lines. The style guide tells the model to stay within that.)
 function loadWriting(name) {
   try {
     return fs.readFileSync(path.join(__dirname, "writing", name), "utf8").trim();
@@ -265,6 +278,13 @@ async function handleStory(req, res) {
   const concept = field(body, "concept", MAX_CONCEPT);
   const metaphor = field(body, "metaphor", MAX_METAPHOR);
   const whyItFits = field(body, "whyItFits", MAX_WHY, { required: false });
+  const audience = typeof body.audience === "string" ? body.audience.trim() : "";
+  if (audience && !AUDIENCES.has(audience)) {
+    throw Object.assign(new Error('Unknown "audience".'), { status: 400 });
+  }
+  const audienceLine = audience
+    ? `\nAudience: ${audience}. Apply the "${audience}" adjustments from the "Audience levels" section of the style guide.`
+    : "";
 
   const controller = new AbortController();
   // Stop paying for tokens if the reader navigates away or cancels.
@@ -272,7 +292,7 @@ async function handleStory(req, res) {
 
   const response = await callAnthropic({
     system: STORY_SYSTEM,
-    user: `Concept: <concept>${concept}</concept>\nComparison: <comparison>${metaphor}</comparison>\nWhy it fits: <why>${whyItFits}</why>\n\nWrite the explanation now.`,
+    user: `Concept: <concept>${concept}</concept>\nComparison: <comparison>${metaphor}</comparison>\nWhy it fits: <why>${whyItFits}</why>${audienceLine}\n\nWrite the explanation now.`,
     maxTokens: 2500,
     stream: true,
     signal: controller.signal,
@@ -311,7 +331,7 @@ async function handleStory(req, res) {
     res.end();
   } catch (err) {
     if (err.name !== "AbortError") console.error("Story stream failed:", err.message);
-    // Headers are already sent, so just end the stream. The client reports a cut-off story.
+    // Headers are already sent, so just end the stream. The client reports a cut-off explanation.
     res.destroy();
   }
 }
@@ -319,7 +339,10 @@ async function handleStory(req, res) {
 // ---------------------------------------------------------------- routing
 
 function serveStatic(req, res, pathname) {
-  const file = STATIC_FILES[pathname];
+  const folderMatch = STATIC_FOLDER.exec(pathname);
+  const file =
+    STATIC_FILES[pathname] ||
+    (folderMatch && `${folderMatch[1]}/${folderMatch[2]}`);
   if (!file || (req.method !== "GET" && req.method !== "HEAD")) {
     return sendError(res, 404, "Not found.");
   }
@@ -344,7 +367,7 @@ const server = http.createServer(async (req, res) => {
 
     if (pathname === "/api/metaphors" || pathname === "/api/story") {
       if (req.method !== "POST") return sendError(res, 405, "Use POST.");
-      if (!LIVE) return sendError(res, 503, "Live stories are not turned on.");
+      if (!LIVE) return sendError(res, 503, "Live mode is not turned on.");
       if (rateLimited(req.socket.remoteAddress || "unknown")) {
         return sendError(res, 429, "Slow down a little and try again soon.");
       }
@@ -367,7 +390,7 @@ server.listen(PORT, HOST, () => {
   console.log(`Explain It My Way running at http://${HOST}:${PORT}`);
   console.log(
     LIVE
-      ? `Live stories: ON (model ${MODEL})`
-      : "Live stories: OFF (set ANTHROPIC_API_KEY to turn them on)",
+      ? `Live mode: ON (model ${MODEL})`
+      : "Live mode: OFF (set ANTHROPIC_API_KEY to turn it on)",
   );
 });

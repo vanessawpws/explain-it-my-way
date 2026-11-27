@@ -6,7 +6,7 @@
     <title>Explain It My Way: tech, minus the robot voice</title>
     <meta
       name="description"
-      content="AI and tech concepts explained like a human would: with stories you already know, and zero jargon."
+      content="AI and tech concepts explained like a human would: with everyday comparisons you already know, and zero jargon."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,8 +37,8 @@
           <p>
             You keep nodding along when people say &ldquo;the cloud&rdquo; or
             &ldquo;a language model&rdquo;. It is not you. It is the robot
-            voice. Pick the thing you have been nodding along to, pick a story
-            you already know, and let it finally click.
+            voice. Pick the thing you have been nodding along to, pick an
+            everyday comparison you already know, and let it finally click.
           </p>
         </div>
 
@@ -126,7 +126,7 @@
               aria-label="Tech concept to explain"
             />
             <button id="suggest" type="button" class="secondary">
-              Suggest stories
+              Suggest comparisons
             </button>
           </div>
           <div class="concept-row">
@@ -137,18 +137,39 @@
 
         <div class="field">
           <label for="metaphor"
-            ><span class="step">2</span> Which story feels familiar to
+            ><span class="step">2</span> Which comparison feels familiar to
             you?</label
           >
           <select id="metaphor" disabled></select>
           <p class="hint" id="metaphor-hint"></p>
         </div>
 
+        <div class="field" id="audience-field" hidden>
+          <label for="audience"
+            ><span class="step">3</span> Who is this for?</label
+          >
+          <select id="audience">
+            <option value="">A curious adult (the default)</option>
+            <option value="kid">I'm 10</option>
+            <option value="manager">I'm a manager</option>
+            <option value="technical">I'm technical</option>
+          </select>
+          <p class="hint">
+            Pick anyone other than the default and the explanation is written
+            fresh for that reader.
+          </p>
+        </div>
+
         <p id="error" class="error" role="alert" hidden></p>
 
-        <button id="generate" type="button" disabled>
-          &#10024; Make it make sense
-        </button>
+        <div class="go-row">
+          <button id="generate" type="button" disabled>
+            &#10024; Make it make sense
+          </button>
+          <button id="surprise" type="button" class="secondary">
+            Surprise me
+          </button>
+        </div>
       </section>
 
       <section id="output" class="output" hidden aria-live="polite">
@@ -170,11 +191,20 @@
     <footer class="footer">
       Made with &#9825; by a software engineer who got tired of robot-speak.
       <br />
-      Every story is a simplified picture, so the real thing is always a little
-      more complicated.
+      Every comparison is a simplified picture, so the real thing is always a
+      little more complicated.
     </footer>
 
     <script src="data.js"></script>
+    <script src="concepts/cloud.js"></script>
+    <script src="concepts/api.js"></script>
+    <script src="concepts/database.js"></script>
+    <script src="concepts/dns.js"></script>
+    <script src="concepts/caching.js"></script>
+    <script src="concepts/containers.js"></script>
+    <script src="concepts/git.js"></script>
+    <script src="concepts/recursion.js"></script>
+    <script src="concepts/blockchain.js"></script>
     <script src="art.js"></script>
     <script src="app.js"></script>
   </body>
