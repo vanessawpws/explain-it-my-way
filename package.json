@@ -1,0 +1,14 @@
+{
+  "name": "explain-it-my-way",
+  "version": "1.0.0",
+  "description": "Tech concepts explained through stories you already know. No jargon.",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20.12"
+  },
+  "license": "UNLICENSED"
+}

@@ -94,32 +94,6 @@ function clearOutput() {
   showError("");
 }
 
-// Builds the story as Markdown from a concept's chosen metaphor.
-function buildMarkdown(metaphor) {
-  const lines = [`# ${metaphor.title}`, "", metaphor.hook, ""];
-
-  for (const item of metaphor.beats) {
-    lines.push(`## ${item.heading}`, "", item.story, "");
-  }
-
-  lines.push("## The Cheat Sheet", "");
-  // Lowercase the first letter so each line reads as one sentence
-  // ("The order window is the connection to the internet"), but leave acronyms alone.
-  const lowerFirst = (text) =>
-    /^[A-Z](?![A-Z])/.test(text) ? text[0].toLowerCase() + text.slice(1) : text;
-  for (const item of metaphor.beats) {
-    lines.push(
-      `- **${item.metaphorPart}** is **${lowerFirst(item.realPart)}**`,
-    );
-  }
-  lines.push("");
-
-  lines.push("## Where the Story Stops Working", "", metaphor.limit, "");
-  lines.push("## Next Time You See It", "", metaphor.closing, "");
-
-  return lines.join("\n");
-}
-
 const escapeHtml = (text) =>
   text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -377,7 +351,7 @@ generateButton.addEventListener("click", () => {
     return;
   }
 
-  currentMarkdown = buildMarkdown(metaphor);
+  currentMarkdown = metaphor.doc;
   currentTitle = `${concept.id}-as-${metaphor.id}`;
   docEl.innerHTML = renderMarkdown(currentMarkdown);
   setArt(docArt, concept.id);
